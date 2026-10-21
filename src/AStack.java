@@ -23,7 +23,7 @@ public class AStack {
         this.values.add(value);
     }
 
-    // Purpose: remove and return the top value. */
+    // Purpose: remove and return the top value.
     public String pop() {
         if (this.isEmpty()) {
             throw new NoSuchElementException("cannot pop an empty stack");

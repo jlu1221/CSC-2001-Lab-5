@@ -3,17 +3,16 @@ import java.util.Objects;
 
 public class AQueue {
 
-    private final String[] values;
+    private String[] values;
     private int front;
     private int size;
 
 
     public AQueue(String[] values, int front, int size) {
-        if (values == null || values.length == 0 || size < 0 || size > values.length
-                || front < 0 || front >= values.length) {
+        if (values == null || values.length == 0 || size < 0 ) {
             throw new IllegalArgumentException("invalid  queue");
         }
-        this.values = values.clone();
+        this.values = values;
         this.front = front;
         this.size = size;
     }
@@ -28,24 +27,27 @@ public class AQueue {
 
     // Purpose: add value at the rear of this queue. Throws IllegalStateException when the fixed-capacity queue is full.
     public void enqueue(String value) {
+        // check empty queue
         if (this.size == this.values.length) {
             throw new IllegalStateException("queue is full");
         }
-        int rear = (this.front + this.size) % this.values.length;
-        this.values[rear] = value;
+        // circular indexing
+        int back = (this.front + this.size) % this.values.length;
+        this.values[back] = value;
         this.size++;
     }
 
     // Purpose: remove and return the front value.
     public String dequeue() {
+        // check empty queue
         if (this.isEmpty()) {
             throw new NoSuchElementException("cannot dequeue an empty queue");
         }
-        String answer = this.values[this.front];
+        String end = this.values[this.front];
         this.values[this.front] = null;
         this.front = (this.front + 1) % this.values.length;
         this.size--;
-        return answer;
+        return end;
     }
 
     // Purpose: return, without removing, the front value.

@@ -36,19 +36,19 @@ public class LLQueue {
 
     // Purpose: remove and return the front value.
     public String dequeue() {
-        this.moveRearToFrontIfNeeded();
+        this.moveRearToFront();
         if (this.front == null) {
             throw new NoSuchElementException("cannot dequeue an empty queue");
         }
-        String answer = this.front.value;
+        String end = this.front.value;
         this.front = this.front.next;
         this.size--;
-        return answer;
+        return end;
     }
 
     // Purpose: return, without removing, the front value.
     public String peek() {
-        this.moveRearToFrontIfNeeded();
+        this.moveRearToFront();
         if (this.front == null) {
             throw new NoSuchElementException("cannot peek at an empty queue");
         }
@@ -66,47 +66,19 @@ public class LLQueue {
     }
 
     // Purpose: if necessary, iteratively reverse rear so the oldest item is first.
-    private void moveRearToFrontIfNeeded() {
+    private void moveRearToFront() {
         if (this.front != null || this.rear == null) {
             return;
         }
         Node reversed = null;
-        Node cursor = this.rear;
-        while (cursor != null) {
-            reversed = new Node(cursor.value, reversed);
-            cursor = cursor.next;
+        Node back = this.rear;
+        while (back != null) {
+            reversed = new Node(back.value, reversed);
+            back = back.next;
         }
         this.front = reversed;
         this.rear = null;
     }
-
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof LLQueue)) {
-            return false;
-        }
-        LLQueue that = (LLQueue) other;
-        if (this.size != that.size) {
-            return false;
-        }
-        return this.valuesInQueueOrder().equals(that.valuesInQueueOrder());
-    }
-
-    private ArrayList<String> valuesInQueueOrder() {
-        ArrayList<String> result = new ArrayList<>();
-        for (Node cursor = this.front; cursor != null; cursor = cursor.next) {
-            result.add(cursor.value);
-        }
-        Node reversedRear = null;
-        for (Node cursor = this.rear; cursor != null; cursor = cursor.next) {
-            reversedRear = new Node(cursor.value, reversedRear);
-        }
-        for (Node cursor = reversedRear; cursor != null; cursor = cursor.next) {
-            result.add(cursor.value);
-        }
-        return result;
-    }
-
 
     public static class Node {
         private final String value;
@@ -119,9 +91,11 @@ public class LLQueue {
 
         @Override
         public boolean equals(Object other) {
-            if (!(other instanceof Node)) { return false; }
-            Node that = (Node) other;
-            return Objects.equals(this.value, that.value) && Objects.equals(this.next, that.next);
+            if (!(other instanceof Node)) {
+                return false;
+            }
+            Node next = (Node) other;
+            return Objects.equals(this.value, next.value) && Objects.equals(this.next, next.next);
         }
     }
 }
